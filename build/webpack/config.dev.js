@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const logger = require('../../server/lib/logger');
 
 const WEBPACK_HOST = 'localhost';
-const WEBPACK_PORT = 3000;
+const WEBPACK_PORT = 8080;
 
 // Override base configuration.
 const config = require('./config.base.js');
@@ -16,7 +16,7 @@ config.entry = [
   'webpack/hot/only-dev-server',
   config.entry.app
 ];
-config.output.publicPath = `http://localhost:3000${config.output.publicPath}`;
+config.output.publicPath = `http://localhost:8080{config.output.publicPath}`;
 
 // Stats configuration.
 config.stats = {

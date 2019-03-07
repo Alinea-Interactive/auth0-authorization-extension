@@ -45,7 +45,7 @@ export default (cb) => {
 
   const server = new Hapi.Server();
   server.connection({
-    host: 'localhost',
+    host: '0.0.0.0',
     port: config('PORT'),
     routes: {
       cors: true,

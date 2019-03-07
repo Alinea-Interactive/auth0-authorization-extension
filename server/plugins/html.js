@@ -28,10 +28,10 @@ const assembleHtmlRoute = (link) => ({
       return reply(ejs.render(template, {
         config: {
           ...cfg,
-          API_BASE: 'http://localhost:3000/'
+          API_BASE: 'http://localhost:8080/'
         },
         assets: {
-          app: 'http://localhost:3000/app/bundle.js'
+          app: 'http://localhost:8080/app/bundle.js'
         }
       }));
     }
