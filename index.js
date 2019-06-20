@@ -40,7 +40,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Start the server.
-return require('./server/init')((key) => nconf.get(key), null, (err, hapi) => {
+return require('./server/init')((key) => nconf.get(key), nconf.get('STORAGE'), (err, hapi) => {
   if (err) {
     return logger.error(err);
   }

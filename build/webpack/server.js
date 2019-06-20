@@ -21,7 +21,7 @@ const options = {
   hot: true,
   inline: true,
   historyApiFallback: true,
-  proxy: [
+/*  proxy: [
     {
       context: () => true,
       target: {
@@ -29,7 +29,7 @@ const options = {
       }
     }
   ],
-
+*/  
   quiet: false,
   noInfo: true,
   watchOptions: {
@@ -44,12 +44,12 @@ const options = {
 };
 
 new WebpackDevServer(webpack(config), options)
-  .listen(8080, 'localhost',
+  .listen(8080, '127.0.0.1:8080',
     (err) => {
       if (err) {
         logger.error(err);
       } else {
-        logger.info('Webpack proxy listening on: http://localhost:8080');
+        logger.info('Webpack proxy listening on: http://localhost:3000');
 
         // Start the actual webserver.
         require('../../index');

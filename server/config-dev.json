@@ -1,0 +1,10 @@
+{
+    "AUTHORIZE_API_KEY"   : "wZ0F8GQo9VMtrbECgesbD5u3",
+    "EXTENSION_SECRET"    : "P3z8v3Wlru8e9ofP3eSzaixj",
+    "AUTH0_DOMAIN"        : "divine-disk-7561.eu.auth0.com",
+    "AUTH0_CLIENT_ID"     : "NFewCU95906ODGfiSEyRJkaNKH6jrWl5",
+    "AUTH0_CLIENT_SECRET" : "NI8fH-rbVkVkq4LUErBya0_EypscWAd-PMO3DX7gw70iGwNy9Pze8pMHE8bQOh_Y",
+    "PUBLIC_WT_URL"       : "https://production-euro-ffspb-user-dashb-alinea.c9users.io/",
+    "WT_URL"              : "https://divine-disk-7561.eu8.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api",
+    "AUTH0_RTA"           : "https://auth0.auth0.com"
+}

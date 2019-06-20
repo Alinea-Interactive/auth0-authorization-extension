@@ -1,5 +1,7 @@
 import path from 'path';
 import { S3StorageContext } from 'auth0-extension-s3-tools';
+import { RDBMSRecordProvider } from 'rdbmsRecordProvider';
+import { PGSQLStorageContext } from 'pgsqlStorageContext';
 import { FileStorageContext, WebtaskStorageContext, BlobRecordProvider } from 'auth0-extension-tools';
 
 import config from '../config';
@@ -19,6 +21,19 @@ export function createProvider(storageContext) {
       });
       return new BlobRecordProvider(context, { concurrentWrites: false });
     }
+    case 'pgsql': {
+      logger.info('Initializing the Postgres Context.');
+
+      const context = new PGSQLStorageContext({
+        pgUser: config('PGUSER'),
+        pgHost: config('PGHOST'),
+        pgPassword: config('PGPASSWORD'),
+        pgDatabase: config('PGDATABASE'),
+        pgPort: config('PGPORT'),
+        defaultData: {}
+      });
+      return new RDBMSRecordProvider(context, { concurrentWrites: true });
+    }      
     case 'webtask':
     default: {
       logger.info('Initializing the Webtask Storage Context.');
