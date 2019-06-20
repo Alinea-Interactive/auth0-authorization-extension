@@ -16,6 +16,15 @@ const getDataForCollection = function(storageContext, collectionName) {
     });
 };
 */
+
+const getMapFromRecordset = function(queryPromise, collectionName, key) {
+
+  return queryPromise
+          .then(recordset => {
+            return _.keyBy(recordset, key);
+          });
+};
+
 const withRetry = function(storageContext, action) {
   const retryOptions = {
     retries: 10,
@@ -91,13 +100,10 @@ RDBMSRecordProvider.prototype.write = function(storageContext, action) {
  */
 RDBMSRecordProvider.prototype.getAll = function(collectionName) {
   
-  //need to convert to map e.g. {key1: data, key2: data}
-  return this.storageContext.query('SELECT * FROM $1', [collectionName]);  
-/*  return getDataForCollection(this.storageContext, collectionName)
-    .then(function(data) {
-      return data[collectionName];
-    });
-*/    
+  return getMapFromRecordset(
+            this.storageContext.query('SELECT * FROM $1', [collectionName]), 
+            this.storageContext.getCollectionKey(collectionName)
+        );  
 };
 
 /**
@@ -107,18 +113,18 @@ RDBMSRecordProvider.prototype.getAll = function(collectionName) {
  * @return {Object} The record.
  */
 RDBMSRecordProvider.prototype.get = function(collectionName, identifier) {
-  return this.getAll(collectionName)
-    .then(function(records) {
-      const record = _.find(records, function(r) { return r._id === identifier; });
-      if (!record) {
-        return Promise.reject(
-          new NotFoundError('The record ' + identifier + ' in ' + collectionName + ' does not exist.')
-        );
-      }
-
-      return record;
-    });
-};
+  
+  return this.storageContext.query('SELECT * FROM $1 WHERE $2 =$3', [collectionName, this.storageContext.getCollectionKey(collectionName), identifier])
+          .then(recordset => {
+            if (!recordset.length) {
+              return Promise.reject(
+                new NotFoundError('The record ' + identifier + ' in ' + collectionName + ' does not exist.')
+              );
+            }
+    
+            return recordset[0];
+        })
+};                
 
 /**
  * Create a record in a collection.

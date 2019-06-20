@@ -46,6 +46,30 @@ function PGSQLStorageContext(options) {
 }
 
 /**
+ * Return the pk column for a table
+ * @return {string} pk column name
+ */
+PGSQLStorageContext.prototype.getCollectionKey = function(tablename) {
+
+  //http://technosophos.com/2015/10/26/querying-postgresql-to-find-the-primary-key-of-a-table.html
+/*
+   column_name    | ordinal_position
+------------------+------------------
+ organizations_id |                1
+*/ 
+  let sql_statement = `SELECT c.column_name, c.ordinal_position
+FROM information_schema.key_column_usage AS c
+LEFT JOIN information_schema.table_constraints AS t
+ON t.constraint_name = c.constraint_name
+WHERE t.table_name = '${tablename}' AND t.constraint_type = 'PRIMARY KEY'`;
+  
+  return this.query(sql_statement)
+            .then(recordset => {
+              return recordset[0].column_name;
+            });
+}
+
+/**
  * Execute a query
  * @return {object} Query results
  */
@@ -56,7 +80,7 @@ PGSQLStorageContext.prototype.query = function(query, params) {
       return client.query(query, params||[])
         .then(res => {
           client.release();
-          return res.rows[0];
+          return res.rows;
         })
         .catch(e => {
           client.release();
